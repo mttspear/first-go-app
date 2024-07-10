@@ -1,0 +1,90 @@
+Album Management API
+
+This project is a simple RESTful API built with Go and the Gin framework. The API allows for managing a collection of music albums, including operations to list, add, and retrieve albums by ID.
+Table of Contents
+
+    Prerequisites
+    Project Structure
+    Installation
+    Usage
+    API Endpoints
+    Contributing
+    License
+
+Prerequisites
+
+    Go (version 1.16+)
+    Gin Web Framework
+
+Project Structure
+
+python
+
+app/
+├── cmd/
+│   └── main.go         # Main entry point of the application
+├── internal/
+│   └── album/
+│       ├── album.go    # Album model and handler functions
+│       └── handler.go  # Handlers for album routes
+├── go.mod              # Go module file
+├── go.sum              # Go dependencies file
+└── .gitignore          # Git ignore file
+
+Installation
+
+    Clone the repository:
+
+sh
+
+git clone https://github.com/mttspear/first-go-app.git
+cd first-go-app
+
+    Initialize Go modules and install dependencies:
+
+sh
+
+go mod tidy
+
+Usage
+
+To start the server, run:
+
+sh
+
+go run cmd/main.go
+
+By default, the server will run on localhost:8080.
+API Endpoints
+
+    GET /albums: Retrieve a list of all albums.
+    POST /albums: Add a new album.
+    GET /albums/
+    : Retrieve an album by its ID.
+
+Example Requests
+
+    GET /albums
+
+sh
+
+curl http://localhost:8080/albums
+
+    POST /albums
+
+sh
+
+curl -X POST http://localhost:8080/albums -d '{"id": "4", "title": "New Album", "artist": "New Artist", "price": 29.99}'
+
+    GET /albums/
+
+sh
+
+curl http://localhost:8080/albums/1
+
+Contributing
+
+Contributions are welcome! Please submit a pull request or open an issue to discuss any changes.
+License
+
+This project is licensed under the MIT License. See the LICENSE file for details.
