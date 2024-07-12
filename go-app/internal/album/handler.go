@@ -14,18 +14,29 @@ func RegisterRoutes(router *gin.Engine) {
 }
 
 func getAlbums(c *gin.Context) {
-	logging.Log.Infof("Fetching album")
+	logging.Log.Infof("Fetching albums handler")
+	albums, err := GetAlbums()
+	if err != nil {
+		c.IndentedJSON(http.StatusInternalServerError, gin.H{"message": "failed to get albums"})
+		return
+	}
 	c.IndentedJSON(http.StatusOK, albums)
 }
 
 func postAlbums(c *gin.Context) {
 	var newAlbum Album
 
+	// Call BindJSON to bind the received JSON to
+	// newAlbum.
 	if err := c.BindJSON(&newAlbum); err != nil {
 		return
 	}
 
-	albums = append(albums, newAlbum)
+	// Add the new album to the slice.
+	if err := AddAlbum(newAlbum); err != nil {
+		c.IndentedJSON(http.StatusInternalServerError, gin.H{"message": "failed to add album"})
+		return
+	}
 	logging.Log.Infof("Added new album: %+v", newAlbum)
 	c.IndentedJSON(http.StatusCreated, newAlbum)
 }
@@ -34,11 +45,14 @@ func getAlbumByID(c *gin.Context) {
 	id := c.Param("id")
 	logging.Log.Infof("Fetching album with ID: %s", id)
 
-	for _, a := range albums {
-		if a.ID == id {
-			c.IndentedJSON(http.StatusOK, a)
-			return
-		}
+	album, err := GetAlbumByID(id)
+	if err != nil {
+		c.IndentedJSON(http.StatusInternalServerError, gin.H{"message": "failed to get album"})
+		return
 	}
-	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "album not found"})
+	if album.ID == "" {
+		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "album not found"})
+		return
+	}
+	c.IndentedJSON(http.StatusOK, album)
 }

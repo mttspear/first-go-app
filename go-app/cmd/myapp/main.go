@@ -2,6 +2,7 @@ package main
 
 import (
 	"go-app/internal/album"
+	"go-app/internal/database"
 
 	"go-app/pkg/logging"
 
@@ -9,6 +10,8 @@ import (
 )
 
 func main() {
+	database.InitDB("albums.db")
+
 	logging.SetupLogging()
 	log := logging.Log
 
