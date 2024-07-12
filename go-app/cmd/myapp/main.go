@@ -2,12 +2,16 @@ package main
 
 import (
 	"go-app/internal/album"
-	"log"
+
+	"go-app/pkg/logging"
 
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
+	logging.SetupLogging()
+	log := logging.Log
+
 	router := gin.Default()
 	album.RegisterRoutes(router)
 

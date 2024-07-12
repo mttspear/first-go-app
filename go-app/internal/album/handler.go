@@ -1,6 +1,7 @@
 package album
 
 import (
+	"go-app/pkg/logging"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -13,6 +14,7 @@ func RegisterRoutes(router *gin.Engine) {
 }
 
 func getAlbums(c *gin.Context) {
+	logging.Log.Infof("Fetching album")
 	c.IndentedJSON(http.StatusOK, albums)
 }
 
@@ -24,11 +26,13 @@ func postAlbums(c *gin.Context) {
 	}
 
 	albums = append(albums, newAlbum)
+	logging.Log.Infof("Added new album: %+v", newAlbum)
 	c.IndentedJSON(http.StatusCreated, newAlbum)
 }
 
 func getAlbumByID(c *gin.Context) {
 	id := c.Param("id")
+	logging.Log.Infof("Fetching album with ID: %s", id)
 
 	for _, a := range albums {
 		if a.ID == id {
